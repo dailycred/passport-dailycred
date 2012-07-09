@@ -1,10 +1,10 @@
 var express = require('express')
   , passport = require('passport')
   , util = require('util')
-  , FacebookStrategy = require('passport-facebook').Strategy;
+  , DailyCredStrategy = require('passport-dailycred').Strategy;
 
-var FACEBOOK_APP_ID = "--insert-facebook-app-id-here--"
-var FACEBOOK_APP_SECRET = "--insert-facebook-app-secret-here--";
+var DAILYCRED_CLIENT_ID = "97929309-8716-4daf-a2b1-10c621c4380f"
+var DAILYCRED_SECRET = "50ff0e1a-e737-4932-b2de-d0a6898cf1c6-4b747134-ed6c-435f-8dad-c1261e72666a";
 
 
 // Passport session setup.
@@ -27,10 +27,10 @@ passport.deserializeUser(function(obj, done) {
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken, refreshToken, and Facebook
 //   profile), and invoke a callback with a user object.
-passport.use(new FacebookStrategy({
-    clientID: FACEBOOK_APP_ID,
-    clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/callback"
+passport.use(new DailyCredStrategy({
+    clientID: DAILYCRED_CLIENT_ID,
+    clientSecret: DAILYCRED_SECRET,
+    callbackURL: "http://localhost:3000/auth/dc/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -85,8 +85,8 @@ app.get('/login', function(req, res){
 //   request.  The first step in Facebook authentication will involve
 //   redirecting the user to facebook.com.  After authorization, Facebook will
 //   redirect the user back to this application at /auth/facebook/callback
-app.get('/auth/facebook',
-  passport.authenticate('facebook'),
+app.get('/auth/dc',
+  passport.authenticate('dailycred'),
   function(req, res){
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
@@ -97,8 +97,8 @@ app.get('/auth/facebook',
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get('/auth/facebook/callback', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+app.get('/auth/dc/callback', 
+  passport.authenticate('dailycred', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
   });
