@@ -56,24 +56,18 @@ application:
         res.redirect('/');
       });
 
-#### Extended Permissions
+Make sure you also let DailyCred know that your user has logged out:
 
-If you need extended permissions from the user, the permissions can be requested
-via the `scope` option to `passport.authenticate()`.
+    app.get('/logout', function(req, res){
+      req.logout();
+      res.redirect('https://dailycred.com/oauth/logout?redirect_uri=http://localhost:3000/&client='+DAILYCRED_CLIENT_ID);
+    });
 
-For example, this authorization requests permission to the user's statuses and
-checkins:
 
-    app.get('/auth/dailycred',
-      passport.authenticate('dailycred'),
-      function(req, res){
-        // The request will be redirected to Dailycred for authentication, with
-        // extended permissions.
-      });
 
 ## Examples
 
-For a complete, working example, refer to the [login example](https://github.com/jaredhanson/passport-dailycred/tree/master/examples/login).
+For a complete, working example, refer to the [login example](https://github.com/hstove/passport-dailycred/tree/master/examples/login).
 
 ## Tests
 
@@ -84,12 +78,13 @@ For a complete, working example, refer to the [login example](https://github.com
 ## Credits
 
   - [Hank Stoever](http://github.com/hstove)
+  - [Jared Hanson](http://github.com/jaredhanson) - this repo was built off of a fork of Jared's [Passport-facebook](https://github.com/jaredhanson/passport-facebook) module.
 
 ## License
 
 (The MIT License)
 
-Copyright (c) 2011 Jared Hanson
+Copyright (c) 2011 Hank Stoever
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

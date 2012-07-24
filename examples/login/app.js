@@ -3,8 +3,8 @@ var express = require('express')
   , util = require('util')
   , DailyCredStrategy = require('passport-dailycred').Strategy;
 
-var DAILYCRED_CLIENT_ID = "97929309-8716-4daf-a2b1-10c621c4380f"
-var DAILYCRED_SECRET = "50ff0e1a-e737-4932-b2de-d0a6898cf1c6-4b747134-ed6c-435f-8dad-c1261e72666a";
+var DAILYCRED_CLIENT_ID = "d58e64dd-7f67-4a4b-a089-8e031c6ecc73"
+var DAILYCRED_SECRET = "6d26b232-9409-47fe-b808-5a4639d59b72-ec40abdc-ca96-4c0c-a46e-13dde0f48b48";
 
 
 // Passport session setup.
@@ -105,7 +105,7 @@ app.get('/auth/dc/callback',
 
 app.get('/logout', function(req, res){
   req.logout();
-  res.redirect('/');
+  res.redirect('https://dailycred.com/oauth/logout?redirect_uri=http://localhost:3000/&client='+DAILYCRED_CLIENT_ID);
 });
 
 app.listen(3000);
