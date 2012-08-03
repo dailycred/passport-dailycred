@@ -3,8 +3,8 @@ var express = require('express')
   , util = require('util')
   , DailyCredStrategy = require('passport-dailycred').Strategy;
 
-var DAILYCRED_CLIENT_ID = "d58e64dd-7f67-4a4b-a089-8e031c6ecc73"
-var DAILYCRED_SECRET = "6d26b232-9409-47fe-b808-5a4639d59b72-ec40abdc-ca96-4c0c-a46e-13dde0f48b48";
+var DAILYCRED_CLIENT_ID = "fdc5bf6e-9a28-403c-ba6e-b3b156a86104"
+var DAILYCRED_SECRET = "8d835c11-03dd-41ca-83ee-5f298761f780-a809e0d7-e2b2-4e70-aa77-97cc25364ab5";
 
 
 // Passport session setup.
