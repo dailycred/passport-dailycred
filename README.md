@@ -56,13 +56,6 @@ application:
         res.redirect('/');
       });
 
-Make sure you also let DailyCred know that your user has logged out:
-
-    app.get('/logout', function(req, res){
-      req.logout();
-      res.redirect('https://dailycred.com/oauth/logout?redirect_uri=http://localhost:3000/&client='+DAILYCRED_CLIENT_ID);
-    });
-
 
 
 ## Examples

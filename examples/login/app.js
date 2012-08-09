@@ -105,7 +105,7 @@ app.get('/auth/dc/callback',
 
 app.get('/logout', function(req, res){
   req.logout();
-  res.redirect('https://dailycred.com/oauth/logout?redirect_uri=http://localhost:3000/&client='+DAILYCRED_CLIENT_ID);
+  req.redirect('/');
 });
 
 app.listen(3000);
