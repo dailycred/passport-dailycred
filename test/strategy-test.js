@@ -1,69 +1,77 @@
 var vows = require('vows');
 var assert = require('assert');
 var util = require('util');
-var FacebookStrategy = require('passport-facebook/strategy');
+var DailycredStrategy = require('passport-dailycred/strategy');
 
 
-vows.describe('FacebookStrategy').addBatch({
-  
+vows.describe('DailycredStrategy').addBatch({
+
   'strategy': {
     topic: function() {
-      return new FacebookStrategy({
+      var strategy = new DailycredStrategy({
         clientID: 'ABC123',
         clientSecret: 'secret'
-      },
-      function() {});
-    },
-    
-    'should be named facebook': function (strategy) {
-      assert.equal(strategy.name, 'facebook');
+      }, function() {});
+      assert.equal(strategy.name, 'Dailycred');
     },
   },
-  
+
   'strategy when loading user profile': {
     topic: function() {
-      var strategy = new FacebookStrategy({
+      var strategy = new DailycredStrategy({
         clientID: 'ABC123',
         clientSecret: 'secret'
       },
       function() {});
-      
-      // mock
-      strategy._oauth2.getProtectedResource = function(url, accessToken, callback) {
-        var body = '{"id":"500308595","name":"Jared Hanson","first_name":"Jared","last_name":"Hanson","link":"http:\\/\\/www.facebook.com\\/jaredhanson","username":"jaredhanson","gender":"male","email":"jaredhanson\\u0040example.com"}';
-        
-        callback(null, body, undefined);
-      }
-      
+
+      // utils.puts(util.inspect(strategy));
+
       return strategy;
     },
-    
+
     'when told to load user profile': {
       topic: function(strategy) {
+        var strategy = new DailycredStrategy({
+          clientID: 'ABC123',
+          clientSecret: 'secret'
+        }, function(){});
         var self = this;
         function done(err, profile) {
           self.callback(err, profile);
         }
-        
+
+        // mock
+        strategy._oauth2.get = function(url, accessToken, callback) {
+          var body = '{"provider":"dailycred","id":"500308595","email":"hank@hank.com","created":100,"username":"hank","admin": true,"tags":["awesome"],"subscribed":true, "referred_by":"1100", "referred":["1100"], "facebook":{"id":"500308595","displayname":"Jared Hanson","first_name":"Jared","last_name":"Hanson","link":"http:\\/\\/www.facebook.com\\/jaredhanson","username":"jaredhanson","gender":"male","email":"jaredhanson\\u0040example.com"}}';
+          callback(null, body, undefined);
+        }
+
         process.nextTick(function () {
           strategy.userProfile('access-token', done);
         });
       },
-      
+
       'should not error' : function(err, req) {
         assert.isNull(err);
       },
       'should load profile' : function(err, profile) {
-        assert.equal(profile.provider, 'facebook');
+        facebook = profile.facebook;
+        assert.equal(profile.provider, 'dailycred');
         assert.equal(profile.id, '500308595');
-        assert.equal(profile.username, 'jaredhanson');
-        assert.equal(profile.displayName, 'Jared Hanson');
-        assert.equal(profile.name.familyName, 'Hanson');
-        assert.equal(profile.name.givenName, 'Jared');
-        assert.equal(profile.gender, 'male');
-        assert.equal(profile.profileUrl, 'http://www.facebook.com/jaredhanson');
-        assert.lengthOf(profile.emails, 1);
-        assert.equal(profile.emails[0].value, 'jaredhanson@example.com');
+        assert.equal(profile.username, 'hank');
+        assert.equal(profile.email, 'hank@hank.com');
+        assert.equal(profile.created, 100);
+        assert.equal(profile.username, "hank");
+        assert.equal(profile.admin, true);
+        assert.equal(profile.tags[0], "awesome");
+        assert.equal(profile.subscribed, true);
+        assert.equal(profile.referred_by, "1100");
+        assert.equal(profile.referred[0], "1100");
+        assert.equal(facebook.username, "jaredhanson");
+        assert.equal(facebook.displayname, 'Jared Hanson');
+        assert.equal(facebook.first_name, 'Jared');
+        assert.equal(facebook.last_name, 'Hanson');
+        assert.equal(facebook.gender, 'male');
       },
       'should set raw property' : function(err, profile) {
         assert.isString(profile._raw);
@@ -73,35 +81,35 @@ vows.describe('FacebookStrategy').addBatch({
       },
     },
   },
-  
+
   'strategy when loading user profile and encountering an error': {
     topic: function() {
-      var strategy = new FacebookStrategy({
+      var strategy = new DailycredStrategy({
         clientID: 'ABC123',
         clientSecret: 'secret'
       },
       function() {});
-      
+
       // mock
-      strategy._oauth2.getProtectedResource = function(url, accessToken, callback) {
+      strategy._oauth2.get = function(url, accessToken, callback) {
         callback(new Error('something-went-wrong'));
       }
-      
+
       return strategy;
     },
-    
+
     'when told to load user profile': {
       topic: function(strategy) {
         var self = this;
         function done(err, profile) {
           self.callback(err, profile);
         }
-        
+
         process.nextTick(function () {
           strategy.userProfile('access-token', done);
         });
       },
-      
+
       'should error' : function(err, req) {
         assert.isNotNull(err);
       },
@@ -113,5 +121,5 @@ vows.describe('FacebookStrategy').addBatch({
       },
     },
   },
-  
+
 }).export(module);

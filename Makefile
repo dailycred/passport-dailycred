@@ -5,13 +5,15 @@ TESTS ?= test/*-test.js
 test:
 	@NODE_ENV=test NODE_PATH=lib $(TEST) $(TEST_FLAGS) $(TESTS)
 
-docs: docs/api.html
+docs:
+	docco test/*-test.js
+	cp -r docs ~/rails/dailycred/public/docs/passport-dailycred/
 
-docs/api.html: lib/passport-facebook/*.js
+docs/api.html: lib/passport-dailycred/*.js
 	dox \
-		--title Passport-Facebook \
-		--desc "Facebook authentication strategy for Passport" \
-		$(shell find lib/passport-facebook/* -type f) > $@
+		--title Passport-Dailycred \
+		--desc "Dailycred authentication strategy for Passport" \
+		$(shell find lib/passport-dailycred/* -type f) > $@
 
 docclean:
 	rm -f docs/*.{1,html}
