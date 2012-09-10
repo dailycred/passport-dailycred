@@ -1,6 +1,6 @@
 {
   "name": "passport-dailycred",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "DailyCred authentication strategy for Passport.",
   "author": { "name": "Hank Stoever", "email": "hstove@gmail.com", "url": "http://dailycred.com" },
   "repository": {
