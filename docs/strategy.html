@@ -1,0 +1,88 @@
+<!DOCTYPE html>  <html> <head>   <title>strategy.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="index.html">                 index.js               </a>                                           <a class="source" href="strategy.html">                 strategy.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               strategy.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Module dependencies.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">util</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;util&#39;</span><span class="p">)</span>
+  <span class="p">,</span> <span class="nx">OAuth2Strategy</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;passport-oauth&#39;</span><span class="p">).</span><span class="nx">OAuth2Strategy</span>
+  <span class="p">,</span> <span class="nx">InternalOAuthError</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;passport-oauth&#39;</span><span class="p">).</span><span class="nx">InternalOAuthError</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><code>Strategy</code> constructor.</p>
+
+<p>The dailycred authentication strategy authenticates requests by delegating to
+dailycred using the OAuth 2.0 protocol.</p>
+
+<p>Applications must supply a <code>verify</code> callback which accepts an <code>accessToken</code>,
+<code>refreshToken</code> and service-specific <code>profile</code>, and then calls the <code>done</code>
+callback supplying a <code>user</code>, which should be set to <code>false</code> if the
+credentials are not valid.  If an exception occured, <code>err</code> should be set.</p>
+
+<p>Options:
+  - <code>clientID</code>      your dailycred application's App ID
+  - <code>clientSecret</code>  your dailycred application's App Secret
+  - <code>callbackURL</code>   URL to which dailycred will redirect the user after granting authorization</p>
+
+<p>Examples:</p>
+
+<pre><code>passport.use(new dailycredStrategy({
+    clientID: '123-456-789',
+    clientSecret: 'shhh-its-a-secret'
+    callbackURL: 'https://www.example.net/auth/dailycred/callback'
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate(..., function (err, user) {
+      done(err, user);
+    });
+  }
+));
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">Strategy</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">verify</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">baseSite</span> <span class="o">=</span> <span class="s2">&quot;https://www.dailycred.com&quot;</span><span class="p">;</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">authorizationURL</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">authorizationURL</span> <span class="o">||</span> <span class="s1">&#39;https://www.dailycred.com/oauth/authorize&#39;</span><span class="p">;</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">tokenURL</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">tokenURL</span> <span class="o">||</span> <span class="s1">&#39;https://www.dailycred.com/oauth/access_token&#39;</span><span class="p">;</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">scopeSeparator</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">scopeSeparator</span> <span class="o">||</span> <span class="s1">&#39;,&#39;</span><span class="p">;</span>
+
+  <span class="nx">OAuth2Strategy</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">verify</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;dailycred&#39;</span><span class="p">;</span>
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Inherit from <code>OAuth2Strategy</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">util</span><span class="p">.</span><span class="nx">inherits</span><span class="p">(</span><span class="nx">Strategy</span><span class="p">,</span> <span class="nx">OAuth2Strategy</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Retrieve user profile from dailycred.</p>
+
+<p>This function constructs a normalized profile, with the following properties:</p>
+
+<ul>
+<li><code>provider</code>         always set to <code>dailycred</code></li>
+<li>'id'               user's dailycred id</li>
+<li>'email'            user's email</li>
+<li>'created'          the date they were created</li>
+<li>'username'</li>
+<li>'admin'            a boolean, whether they have been marked as an admin on dailycred</li>
+<li>'tags'             an array of tags for this user</li>
+<li>'subscribed'       a boolean, whether they have explicitely unsubscibed or not through dailycred</li>
+<li>'referred_by'      a user_id, if this user was referred by someone</li>
+<li>'referred'         an array of user_id's, which this user has referred</li>
+<li>'facebook'         an object, which directly mimicks the response from facebook's me.json</li>
+</ul>
+
+<p>All values could be undefined in any response, except for 'id', 'provider', and 'created'</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Strategy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">userProfile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">accessToken</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">_oauth2</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://www.dailycred.com/graph/me.json&#39;</span><span class="p">,</span> <span class="nx">accessToken</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">body</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">done</span><span class="p">(</span><span class="k">new</span> <span class="nx">InternalOAuthError</span><span class="p">(</span><span class="s1">&#39;failed to fetch user profile&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+
+      <span class="kd">var</span> <span class="nx">profile</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">provider</span><span class="o">:</span> <span class="s1">&#39;dailycred&#39;</span> <span class="p">};</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="nx">json</span><span class="p">.</span><span class="nx">user_id</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">email</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">email</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">created</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">created</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">username</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">admin</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">admin</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">tags</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">tags</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">subscribed</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">subscribed</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">referred_by</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">referred_by</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">referred</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">referred</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">facebook</span> <span class="o">=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">facebook</span><span class="p">;</span>
+
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">_raw</span> <span class="o">=</span> <span class="nx">body</span><span class="p">;</span>
+      <span class="nx">profile</span><span class="p">.</span><span class="nx">_json</span> <span class="o">=</span> <span class="nx">json</span><span class="p">;</span>
+
+      <span class="nx">done</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">profile</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">done</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Expose 'strategy'</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">Strategy</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

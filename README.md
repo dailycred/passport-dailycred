@@ -23,8 +23,8 @@ accepts these credentials and calls `done` providing a user, as well as
 `options` specifying a app ID, app secret, and callback URL.
 
     passport.use(new DailycredStrategy({
-        clientID: FACEBOOK_APP_ID,
-        clientSecret: FACEBOOK_APP_SECRET,
+        clientID: DAILYCRED_APP_ID,
+        clientSecret: DAILYCRED_SECRET,
         callbackURL: "http://localhost:3000/auth/dailycred/callback"
       },
       function(accessToken, refreshToken, profile, done) {

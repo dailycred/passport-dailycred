@@ -6,8 +6,8 @@ test:
 	@NODE_ENV=test NODE_PATH=lib $(TEST) $(TEST_FLAGS) $(TESTS)
 
 docs:
-	docco test/*-test.js
-	cp -r docs ~/rails/dailycred/public/docs/passport-dailycred/
+	docco lib/passport-dailycred/*.js
+	cp -r docs ~/rails/dailycred/public/docs/passport-dailycred
 
 docs/api.html: lib/passport-dailycred/*.js
 	dox \
