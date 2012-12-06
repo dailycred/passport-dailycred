@@ -1,6 +1,6 @@
 # Passport-Dailycred
 
-[![Build Status](https://secure.travis-ci.org/hstove/passport-dailycred.png?branch=master)](https://travis-ci.org/hstove/passport-dailycred)
+[![Build Status](https://secure.travis-ci.org/dailycred/passport-dailycred.png?branch=master)](https://travis-ci.org/dailycred/passport-dailycred)
 
 [Passport](http://passportjs.org/) strategy for authenticating with [Dailycred](https://www.dailycred.com/)
 using the OAuth 2.0 API.
