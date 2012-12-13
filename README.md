@@ -44,12 +44,20 @@ authenticate requests.
 For example, as route middleware in an [Express](http://expressjs.com/)
 application:
 
-    app.get('/auth/dailycred',
-      passport.authenticate('dailycred'),
-      function(req, res){
-        // The request will be redirected to Dailycred for authentication, so
-        // this function will not be called.
-      });
+    app.get('/auth/signup',
+      passport.authenticate('dailycred'));
+
+    app.get('/auth/signin',
+      passport.authenticate('dailycred', {action:'signin'})); //uses param ?action=signin
+
+    //setup a route for each provider, so you can use /auth/facebook, etc
+    var providers = ["facebook","google","twitter"];
+    var provider;
+    for (i in providers){
+      provider = providers[i];
+      app.get("/auth/"+provider,
+        passport.authenticate('dailycred', {identity_provider: provider}))
+    }
 
     app.get('/auth/dailycred/callback',
       passport.authenticate('dailycred', { failureRedirect: '/login' }),

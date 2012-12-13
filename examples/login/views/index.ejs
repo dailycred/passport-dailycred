@@ -1,5 +1,8 @@
 <% if (!user) { %>
 	<h2>Welcome! Please log in.</h2>
 <% } else { %>
-	<h2>Hello, <%= user.emails[0].value %>.</h2>
+	<h2>Hello, <%= user.email %>.</h2>
+  <pre>
+<%= JSON.stringify(user, undefined, 2) %>
+  </pre>
 <% } %>

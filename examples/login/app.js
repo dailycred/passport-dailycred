@@ -1,10 +1,11 @@
 var express = require('express')
   , passport = require('passport')
   , util = require('util')
-  , DailyCredStrategy = require('passport-dailycred').Strategy;
+  , DailyCredStrategy = require("../../../passport-dailycred/lib/passport-dailycred/index.js").Strategy; //use local repo
+  // , DailyCredStrategy = require('passport-dailycred').Strategy;
 
-var DAILYCRED_CLIENT_ID = "fdc5bf6e-9a28-403c-ba6e-b3b156a86104"
-var DAILYCRED_SECRET = "8d835c11-03dd-41ca-83ee-5f298761f780-a809e0d7-e2b2-4e70-aa77-97cc25364ab5";
+var DAILYCRED_CLIENT_ID = "78b6deb7-c252-4739-9988-23c91da7acf5"
+var DAILYCRED_SECRET = "33e355d1-9e39-465e-b8d6-fcc734ce6e37-ee05ae3d-9bbe-4996-b6fd-04fa0341fc7f";
 
 
 // Passport session setup.
@@ -35,7 +36,6 @@ passport.use(new DailyCredStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      
       // To keep the example simple, the user's Dailycred profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Dailycred account with a user record in your database,
@@ -85,23 +85,33 @@ app.get('/login', function(req, res){
 //   request.  The first step in Dailycred authentication will involve
 //   redirecting the user to Dailycred.com.  After authorization, Dailycred will
 //   redirect the user back to this application at /auth/Dailycred/callback
-app.get('/auth/dc',
-  passport.authenticate('dailycred'),
-  function(req, res){
-    // The request will be redirected to Dailycred for authentication, so this
-    // function will not be called.
-  });
+app.get('/auth/signup',
+      passport.authenticate('dailycred'));
+
+app.get('/auth/signin',
+  passport.authenticate('dailycred', {action:'signin'})); //uses param ?action=signin
+
+//setup a route for each provider, so you can use /auth/facebook, etc
+var providers = ["facebook","google","twitter"];
+var provider;
+for (i in providers){
+  provider = providers[i];
+  app.get("/auth/"+provider,
+    passport.authenticate('dailycred', {identity_provider: provider}))
+}
 
 // GET /auth/Dailycred/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get('/auth/dc/callback', 
+app.get('/auth/dc/callback',
   passport.authenticate('dailycred', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
   });
+
+
 
 app.get('/logout', function(req, res){
   req.logout();

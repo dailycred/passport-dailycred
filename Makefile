@@ -8,6 +8,7 @@ test:
 docs:
 	docco lib/passport-dailycred/*.js
 	cp -r docs ~/rails/dailycred/public/docs/passport-dailycred
+	cp -r README.md ~/rails/dailycred/app/views/tags/docs/passport.html
 
 docs/api.html: lib/passport-dailycred/*.js
 	dox \
