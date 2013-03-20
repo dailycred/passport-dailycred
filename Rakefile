@@ -12,7 +12,7 @@ task :docs do
       end
     end
     doc = Maruku.new(md)
-    File.open("/Users/hank/rails/dailycred/app/views/tags/passport.html", 'w') {|f| f.write doc.to_html}
+    File.open("/Users/hank/java/dailycred/app/views/tags/docs/passport.html", 'w') {|f| f.write doc.to_html}
     p "Copied Readme"
   rescue LoadError
   end
